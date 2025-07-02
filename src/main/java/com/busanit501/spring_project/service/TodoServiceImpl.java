@@ -8,6 +8,9 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor // final 필드를 생성자 주입.
@@ -26,6 +29,20 @@ public class TodoServiceImpl implements TodoService {
         // 실제 작업, 외주주기, DAO 부탁, 데이터 입력 해줘.
         todoMapper.insert(todoVO);
 
+    }
 
+    @Override
+    public List<TodoDTO> getAll() {
+        List<TodoDTO> dtoList = todoMapper.selectAll().stream().
+                map(vo -> modelMapper.map(vo, TodoDTO.class))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    public TodoDTO selectByTno(Long tno) {
+        TodoVO todoVO = todoMapper.selectByTno(tno);
+        TodoDTO todoDTO = modelMapper.map(todoVO, TodoDTO.class);
+        return todoDTO;
     }
 }
