@@ -1,0 +1,30 @@
+250701 | 수업순서
+1교시)SQL 파일 분리, mappers 설정
+resources.mappers.TimeMapper2.xml
+/WEB-INF/servlet-context.xml
+/WEB-INF/root-context.xml
+
+2교시)mvc에서, 서블릿 컨텍스트 설정에서, 지정한 뷰 폴더 위치와 컨트롤러 연결 하기
+/WEB-INF/web.xml
+SampleController.java
+/WEB-INF/servlet-context.xml
+
+TodoController.java  ->
+list.jsp  ->
+register.jsp  ->
+SampleController.java  ->
+
+5교시)
+ex4.jsp  ->
+서버 에서 웹 화면으로 데이터전달
+SampleController.java  예시  ->
+ex6.jsp  ->
+CommonExceptionAdvice.java  ->
+custom404.jsp  ->
+DB수정 alter table tbl_todo add column writer varchar(30);  ->
+ModelMapperConifg.java
+
+
+
+@Configuration // <-- 서버가 시작할 때 이 클래스 설정함.
+

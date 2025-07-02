@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--현재 파일은 sql를 모아 놓는 파일이고, -->
+<!--이 sql 모음 파일을 -->
+<!-- 연결할 파일 지정, 자바 폴더 하위의 파일에 연결
+주의 사항!,
+1) 연결할 2개의 파일이름이 동일 해야한다.
+2) id = getNow -> 연결할 파일의 메소드 명과 동일함.
+-->
+<mapper namespace="com.busanit501.spring_project.mapper.TimeMapper2">
+    <select id="getNow" resultType="string">
+        select now()
+    </select>
+</mapper>

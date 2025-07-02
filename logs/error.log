@@ -1,0 +1,2 @@
+12:11:20.049 [Test worker] INFO  com.busanit501.spring_project.service.TodoServiceImpl-컨트롤러부터 넘어온 데이터 확인, todoDTO : TodoDTO(tno=null, title=서비스 단위테스트 스프링 버전, dueDate=2025-07-02, finished=false, writer=이상용, 서비스 단위테스트)
+12:11:20.094 [Test worker] INFO  com.busanit501.spring_project.service.TodoServiceImpl-변환 된 데이터 확인 todoVO : TodoVO(tno=null, title=서비스 단위테스트 스프링 버전, dueDate=2025-07-02, finished=false, writer=이상용, 서비스 단위테스트)

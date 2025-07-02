@@ -1,0 +1,51 @@
+250630 | 수업순서
+WebAppListener 클래스 ->
+TodoListController클래스 / TodoRegController클래스 ->
+todoList.jsp ->
+LoginListener 클래스
+
+---- Spring Framework ----
+새 프로젝트 만들기
+Spring_Project
+
+Log4j2.xml
+vcs.xml  ->
+SampleDAO클래스
+SampleService클래스  ->
+root-context.xml  ->
+SampleTests클래스  ->
+SampleDAOImpl 클래스 ->
+EventSampleDAOImpl 클래스  ->
+build.gradle  ->
+TimeMapper 클래스  ->
+TimeMapperTests  클래스
+
+
+## Spring Framework
+
+- root-context ( XML 기반으로 설정할 때 사용하는 root-context.xml 파일 )
+ : servlet-context.xml과는 달리, 
+	**웹(View)**과 직접적으로 관련 없는 비즈니스 로직 구성 요소들을 정의합니다.
+
+💡 Bean 등록이란?
+ : 스프링에서는 객체를 직접 new해서 사용하는 게 아니라, 
+  미리 설정 파일(XML 또는 애노테이션 등)에서 등록해 두고, 스프링이 대신 생성 및 관리.
+
+EX) @Autowired
+private SampleDAO sampleDAO;
+
+==> 이런 식으로 자동 주입(@Autowired)할 수 있는 이유는,
+	 root-context.xml에 등록해 두었기 때문.
+
+🔚 요약
+root-context.xml은 Spring의 전역 설정 파일.
+
+<bean> 태그로 객체를 스프링에 등록 → 스프링이 생성/관리.
+
+예제는 SampleDAO와 SampleService를 Bean으로 등록한 것.
+
+일반적으로 DAO, Service, 트랜잭션 설정 등은 여기서 하고, Controller나 View는 servlet-context.xml에서 다룸.
+
+=> root-context.xml에 등록해놨기때문에 그래서 객체를 생성안하고 바로 이용할 수 있다.
+
+

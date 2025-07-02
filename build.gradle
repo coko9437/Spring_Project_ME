@@ -1,0 +1,123 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.busanit501'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.10.2'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    // 외부 기능 탑재
+    // JSTL, 자바 문법을 간결히 해서, 화면상에서 이용하는 도구.
+    // jsp 가 아닌, html 타임리프를 이용할 예정. 거의 비슷함.
+    // mvnRepository 사이트에서, 라이브러리 검색 방법.
+    //
+    // 1
+    //jstl 추가,
+    // https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl
+    // 리프레쉬 하기.
+    implementation group: 'jstl', name: 'jstl', version: '1.2'
+
+    // 2
+    // 마리아디비 연결 도구.
+    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.3'
+
+    // 3
+    // lombok , get/set/toString/ 기본 기능 편의 도구.
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    // 기본 설정 참고, 버전만 확인
+    //    implementation 'org.projectlombok:lombok:1.18.38'
+
+    // 컴파일 단위, 테스트 단위, 2개 설정 예시
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+
+    // test, 단위 테스트에서도, 사용하기.
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+
+    // 4,
+    // Hikari CP, 디비 연결시, 사용하는 도구,
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '6.3.0'
+
+    // 5,
+    // 모델 맵퍼, DTO <-> VO 변환 해주는 도구.
+    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.4'
+
+    // 6
+    // 로깅 도구, 내가 지정한 레벨 등급에 따라서 기록을 다르게 처리 가능.
+    // logging 라이브러리,Log4j2,
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '3.0.0-beta2'
+
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '3.0.0-beta2'
+
+// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '3.0.0-beta2'
+
+    // 7 spring core
+    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.19'
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.19'
+    implementation group: 'org.springframework', name: 'spring-test', version: '5.3.19'
+
+    //8 spring mvc
+    // https://mvnrepository.com/artifact/org.springframework/spring-webmvc
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.19'
+
+    //9 spring-jdbc
+    // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
+    implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.19'
+
+    //10 spring-tx
+    //스프링 트랜잭션(Spring Transaction) 기능을 위한 모듈로,
+    //데이터베이스 작업에서 일관성과 원자성을 유지하기 위해 사용
+    // https://mvnrepository.com/artifact/org.springframework/spring-tx
+    implementation group: 'org.springframework', name: 'spring-tx', version: '5.3.19'
+
+    // 11 mybatis
+    // https://mvnrepository.com/artifact/org.mybatis/mybatis
+    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.17'
+
+    //12 mybatis-spring
+    // https://mvnrepository.com/artifact/org.mybatis/mybatis-spring
+    // 현재 작업하는 버전, 3.0.4, 클래스 경로 변경,
+    // 다운그레이드, -> 2.0.7
+    implementation group: 'org.mybatis', name: 'mybatis-spring', version: '2.0.7'
+
+    //13
+    // 서버 입장에서 입력된 데이터 유효성 검증 도구
+    // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
+    implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.1.Final'
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
