@@ -40,7 +40,7 @@
                 <!--                2024-12-04 , 문자열 타입으로 오면, -> LocalDate 타입으로 자동 형변환-->
                 <bean class="com.busanit501.spring_project.controller.formatter.LocalDateFormatter"></bean>
                 <!--                finished 체크가 되었다면, 체크박스라서, 값은 on 문자열로 오고, 변환 boolean true 변환해주기-->
-<!--                <bean class="com.busanit501.spring_project.controller.CheckboxFormatter"></bean>-->
+                <bean class="com.busanit501.spring_project.controller.formatter.CheckboxFormatter"></bean>
             </set>
         </property>
     </bean>

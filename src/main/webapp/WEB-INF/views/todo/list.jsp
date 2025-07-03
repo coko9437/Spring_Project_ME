@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--resources/test.html <<-- 이 베이스 레이아웃을 바탕으로 가져와서 카드바디 부분에 --%>
-<%--데이터를 추가할예정.--%>
+<%--resources/test.html, 베이스 레이아웃 , 가져와서, 카드 바디 부분에 --%>
+<%--데이터를 추가 하는 중. --%>
 <!--베이스 레이아웃 접근 주소 ,
 http://localhost:8080/resources/test.html-->
 <!doctype html>
@@ -38,10 +38,10 @@ http://localhost:8080/resources/test.html-->
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    <a class="nav-link active" aria-current="page" href="/todo/list">목록가기</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Features</a>
+                                    <a class="nav-link" href="/todo/register">글쓰기</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Pricing</a>
@@ -68,8 +68,9 @@ http://localhost:8080/resources/test.html-->
                         Todo 목록
                     </div>
                     <div class="card-body">
-                        <%--         여기에 목록을 출력하기         --%>
+                        <%--                        여기에 목록을 출력하기--%>
                         <h5 class="card-title">목록</h5>
+                        <%--                        ${dtoList}--%>
                         <table class="table">
                             <thead>
                             <tr>
@@ -84,7 +85,12 @@ http://localhost:8080/resources/test.html-->
                             <c:forEach items="${dtoList}" var="dto">
                                 <tr>
                                     <th scope="row"><c:out value="${dto.tno}"></c:out></th>
-                                    <td><c:out value="${dto.title}"/></td>
+                                        <%--      클릭시? : /todo/read?tno=21--%>
+                                    <td>
+                                        <a href="/todo/read?tno=${dto.tno}" class="text-decoration-none">
+                                            <c:out value="${dto.title}"/>
+                                        </a>
+                                    </td>
                                     <td><c:out value="${dto.writer}"/></td>
                                     <td><c:out value="${dto.dueDate}"/></td>
                                     <td><c:out value="${dto.finished}"/></td>
@@ -93,7 +99,6 @@ http://localhost:8080/resources/test.html-->
                             </tbody>
 
                         </table>
-
                     </div>
                 </div>
                 <!--        카드 끝 부분-->
@@ -102,9 +107,9 @@ http://localhost:8080/resources/test.html-->
         </div>
         <!--        class="row content"-->
     </div>
-    <div class="row content">
-        <h1>Content</h1>
-    </div>
+    <%--    <div class="row content">--%>
+    <%--        <h1>Content</h1>--%>
+    <%--    </div>--%>
     <div class="row footer">
         <!--        <h1>Footer</h1>-->
         <div class="row fixed-bottom" style="z-index: -100">

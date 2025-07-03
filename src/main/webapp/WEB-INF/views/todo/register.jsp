@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: it
@@ -15,7 +14,7 @@ http://localhost:8080/resources/test.html-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
@@ -37,10 +36,10 @@ http://localhost:8080/resources/test.html-->
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    <a class="nav-link active" aria-current="page" href="/todo/list">목록가기</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Features</a>
+                                    <a class="nav-link" href="/todo/register">글쓰기</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Pricing</a>
@@ -93,8 +92,8 @@ http://localhost:8080/resources/test.html-->
                             </div>
 
                         </form>
-<%--                        서버로부터 유효성체크를 통과 못했을 경우 -> errors(키)로 받아온 에러 정보를--%>
-<%--                        웹브라우저 콘솔에 일단 표기하기.--%>
+                        <%--          서버로 부터 유효성 체크 통과를 못했을 경우에, errors 키로 받아온 --%>
+                        <%--          에러 정보를 , 웹브라우저 콘솔에 일단 표기 해보기--%>
                         <script>
                             const serverValidResult = {}
                             <c:forEach items="${errors}" var="error">
@@ -102,6 +101,7 @@ http://localhost:8080/resources/test.html-->
                             </c:forEach>
                             console.log(serverValidResult)
                         </script>
+
 
 
                     </div>

@@ -10,5 +10,7 @@ public interface TodoService {
     void register(TodoDTO todoDTO);
     List<TodoDTO> getAll();
     TodoDTO selectByTno(Long tno);
+    void remove(Long tno);
+    void modify(TodoDTO todoDTO); //수정하기.
 }
 

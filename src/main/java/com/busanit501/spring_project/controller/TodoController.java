@@ -57,6 +57,9 @@ public class TodoController {
     // 화면에서, TodoDTO 형식의 데이터를 전달을 받으면,
     // 각각 받는게 아니라, TodoDTO 모델 클래스로 한번에 받기 예시.
     @PostMapping("/register")
+    // 작성 순서 유지
+    // 순서1, @Valid TodoDTO todoDTO : 유효성 검사 적용
+    //  순서2, BindingResult bindingResult : 통과 못한 이유 원인 남겨져있다.
                 // @Valid TodoDTO todoDTO : 유효성 검사 적용
                 //  BindingResult bindingResult : 통과 못한 이유 원인 남겨져있다.
     public String registerPost(@Valid TodoDTO todoDTO,
@@ -81,12 +84,43 @@ public class TodoController {
         return "redirect:/todo/list";
 
     }
-    @GetMapping("/read")
+    // 하나조회 (서버가 DB로부터 받은 tno 번호로 todo정보 조회) || 정방향으로 찍고 역방향으로 돌아온 상태
+    @GetMapping({"/read", "/modify"})
     public void read(Long tno, Model model){
         TodoDTO todoDTO = todoService.selectByTno(tno);
         log.info(todoDTO);
+//        서버 -> 웹화면으로 데이터전달 (키:dto, 값:객체)
+//        화면에서 사용하려면 키(dto)를 이용하면 됨.
         model.addAttribute("dto", todoDTO);
 
+    }
+    // 삭제하면 컨트롤러에서 받아와서 /todo/list 화면으로 넘어감.
+    @PostMapping("/remove")
+    public String remove(Long tno, RedirectAttributes redirectAttributes) {
+        log.info("삭제작업중.");
+            log.info("tno : "+tno);
+            todoService.remove(tno);
+            return "redirect:/todo/list";
+    }
+
+    @PostMapping("/modify")
+    public String modify(@Valid TodoDTO todoDTO,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            log.info("수정 적용 부분에서, 유효성 통과 못할 경우");
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            // 현재 수정 화면에서, 수정할 내용을 입력 후, 유효성 체크 통과를 못했다면,
+            // 다시 수정 화면으로 이동해야함. 어는 tno 번호 에서 작업하는지 알려줘야함.
+            // 쿼리 스트링으로 ?tno=21 , 달고 화면에 전달함.
+            redirectAttributes.addAttribute("tno", todoDTO.getTno());
+            // 최종 url : /todo/modify?tno=21
+            return "redirect:/todo/modify";
+        }
+        log.info("수정 로직처리 post 작업중 넘어온 데이터 확인 todoDTO: " + todoDTO);
+        todoService.modify(todoDTO);
+        //PRG 패턴,
+        return "redirect:/todo/list";
     }
 
 }

@@ -15,4 +15,8 @@ public class TodoVO {
     private LocalDate dueDate;
     private boolean finished;
     private String writer;
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
 }

@@ -42,4 +42,23 @@ public class TodoServiceTests {
         TodoDTO todoDTO = todoService.selectByTno(21L);
         log.info(todoDTO);
     }
+
+    @Test
+    public void testDelete() {
+        todoService.remove(18L);
+    }
+
+    @Test
+    public void testUpdate() {
+        // 실제 사용할 DB 필요,
+        // 변경할 더미데이터 필요함 (TodoDTO)
+//            TodoVO는 DB와 직접 연결하는 모델클래스임.
+//                => 그래서 Setter를 안씀 (불변성)
+//                방금 만든것처럼 따로 메서드를 만들어서 사용함.
+//                but) DTO는 setter상관없이 사용가능함.
+//                자유롭게 프레젠테이션 로직에서 자유롭게 화면에 표현할 수 있음.
+        TodoDTO todoDTO = todoService.selectByTno(17L);
+        todoDTO.setTitle("수정테스트, TodoServiceTests에서 진행중.!");
+        todoService.modify(todoDTO); // DB에 반영하기
+    }
 }

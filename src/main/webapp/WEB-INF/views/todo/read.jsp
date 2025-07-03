@@ -29,10 +29,10 @@ http://localhost:8080/resources/test.html-->
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  <a class="nav-link active" aria-current="page" href="/todo/list">목록가기</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Features</a>
+                  <a class="nav-link" href="/todo/register">글쓰기</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Pricing</a>
@@ -56,35 +56,35 @@ http://localhost:8080/resources/test.html-->
         <!--        카드 시작 부분-->
         <div class="card">
           <div class="card-header">
-            tno 번호로 하나조회, 상세조회
+            tno로 번호로 하나조회, 상세조회
           </div>
           <div class="card-body">
             <div class="input-group mb-3">
               <span class="input-group-text">Tno</span>
               <input type="text" name="tno" class="form-control" readonly
-                     value=<c:out value="${todoDTO.tno}"></c:out> >
+                     value=<c:out value="${dto.tno}"></c:out> >
             </div>
             <div class="input-group mb-3">
               <span class="input-group-text">Title</span>
               <input type="text" name="title" class="form-control" readonly
-                     value='<c:out value="${todoDTO.title}"></c:out>'>
+                     value='<c:out value="${dto.title}"></c:out>'>
             </div>
 
             <div class="input-group mb-3">
               <span class="input-group-text">DueDate</span>
               <input type="date" name="dueDate" class="form-control" readonly
-                     value=<c:out value="${todoDTO.dueDate}"></c:out>>
+                     value=<c:out value="${dto.dueDate}"></c:out>>
             </div>
 
             <div class="input-group mb-3">
               <span class="input-group-text">Writer</span>
               <input type="text" name="writer" class="form-control" readonly
-                     value=<c:out value="${todoDTO.writer}"></c:out>>
+                     value=<c:out value="${dto.writer}"></c:out>>
             </div>
             <div class="input-group mb-3">
               <label class="form-check-label">Finished &nbsp</label>
               <input type="checkbox" name="finished" class="form-check-input" readonly
-              ${todoDTO.finished ? "checked" : ""}>
+              ${dto.finished ? "checked" : ""}>
             </div>
             <div class="my-4">
               <div class="float-end">
@@ -92,29 +92,50 @@ http://localhost:8080/resources/test.html-->
                 <button type="button" class="btn btn-secondary">목록가기</button>
               </div>
             </div>
+            <script>
+              // 자바스크립트 , 좀더 편하게 사용하는 도구들 많음.
+              // 대표적으로 jQuery, 많이 사용함. -> 리액트 , Vue.js ,
+              // 순수 자바스크립트, 바닐라 자바스크립라고 표현함,
+              // 바닐라로, 특정 요소를 선택하고, 로직 처리함.
+              document.querySelector(".btn-primary").addEventListener("click",
+                      function (e) {
+                        // read , 읽기전용. 변결 불가.
+                        // 수정폼으로 가기. 데이터 변경 가능.
+                        self.location = "/todo/modify?tno="+${dto.tno}
+                      }, false)
+
+              document.querySelector(".btn-secondary").addEventListener("click",
+                      function (e) {
+                        // read , 읽기전용. 변결 불가.
+                        // 수정폼으로 가기. 데이터 변경 가능.
+                        self.location = "/todo/list"
+                      }, false)
+
+
+            </script>
             <%--                        </form>--%>
             <%--                        Todo 입력 폼 여기에 작성--%>
 
           </div>
-          </div>
         </div>
-        <!--        카드 끝 부분-->
       </div>
-      <!--        col-->
+      <!--        카드 끝 부분-->
     </div>
-    <!--        class="row content"-->
+    <!--        col-->
   </div>
-  <div class="row content">
-    <h1>Content</h1>
+  <!--        class="row content"-->
+</div>
+<%--    <div class="row content">--%>
+<%--        <h1>Content</h1>--%>
+<%--    </div>--%>
+<div class="row footer">
+  <!--        <h1>Footer</h1>-->
+  <div class="row fixed-bottom" style="z-index: -100">
+    <footer class="py-1 my-1">
+      <p class="text-center text-muted">Footer</p>
+    </footer>
   </div>
-  <div class="row footer">
-    <!--        <h1>Footer</h1>-->
-    <div class="row fixed-bottom" style="z-index: -100">
-      <footer class="py-1 my-1">
-        <p class="text-center text-muted">Footer</p>
-      </footer>
-    </div>
-  </div>
+</div>
 </div>
 
 
