@@ -1,5 +1,6 @@
 package com.busanit501.spring_project.controller;
 
+import com.busanit501.spring_project.dto.PageRequestDTO;
 import com.busanit501.spring_project.dto.TodoDTO;
 import com.busanit501.spring_project.service.TodoService;
 import lombok.Getter;
@@ -33,12 +34,23 @@ public class TodoController {
     // /WEB-INF/views/todo/list.jsp , 가리킴.
     // 자동 연결, 뷰 리졸버라는 친구의 업무.
     // 메소드명이 아니라, url 주소로 , 화면 연결을함.
-    public void list2(Model model) {
+
+//        page, size 정보를 자동 형변환 함... => @Valid PageRequestDTO pageRequestDTO
+    public void list2(@Valid PageRequestDTO pageRequestDTO,
+                      BindingResult bindingResult,Model model) {
         log.info("TodoController에서 작업, list 호출 ");
-        List<TodoDTO> dtoList = todoService.getAll();
-        dtoList.forEach(vo -> log.info(vo));
-        // 서비스로 부터 외주 맡겨서, 디비 정보를 받아와서, 화면에 전달, 탑재하기.
-        model.addAttribute("dtoList", todoService.getAll());
+//        List<TodoDTO> dtoList = todoService.getAll();
+//        dtoList.forEach(vo -> log.info(vo));
+//        // 서비스로 부터 외주 맡겨서, 디비 정보를 받아와서, 화면에 전달, 탑재하기.
+//        model.addAttribute("dtoList", todoService.getAll());
+        // 페이징 처리 후
+        // 유효성체크.
+        if (bindingResult.hasErrors()) {
+            // 기본값으로 할당하기.
+            // size  최소 10, 최대 100, 요청 :1000, 잘못된 요청이면, 기본으로 10으로 변경하기.
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
     }
 
     // 최종 url : /todo/register

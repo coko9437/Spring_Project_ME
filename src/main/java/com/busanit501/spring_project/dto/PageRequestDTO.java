@@ -33,5 +33,7 @@ public class PageRequestDTO {
 //        3페이지 21개부터..
     public int getSkip() {
         return (page - 1) * size;
+
     }
+
 }

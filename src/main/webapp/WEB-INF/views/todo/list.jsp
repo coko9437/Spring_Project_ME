@@ -82,7 +82,10 @@ http://localhost:8080/resources/test.html-->
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${dtoList}" var="dto">
+                            <%--                            페이징 처리전--%>
+                            <%--                            <c:forEach items="${dtoList}" var="dto">--%>
+                            <%--                                페이징 처리 후--%>
+                            <c:forEach items="${responseDTO.dtoList}" var="dto">
                                 <tr>
                                     <th scope="row"><c:out value="${dto.tno}"></c:out></th>
                                         <%--      클릭시? : /todo/read?tno=21--%>
@@ -97,8 +100,56 @@ http://localhost:8080/resources/test.html-->
                                 </tr>
                             </c:forEach>
                             </tbody>
-
                         </table>
+<%--                        페이징을 가리키는 화면(네비게이션)을 부트스트랩에서 가져와서 이용하기              --%>
+<%--                            <div class="float-end">--%>
+                            <div>
+
+
+                                <%--                            페이징 네비게이션 화면 영역--%>
+                                <ul class="pagination flex-wrap justify-content-center">
+                                    <%--                            이전 버튼--%>
+                                    <c:if test="${responseDTO.prev}">
+                                        <li class="page-item">
+                                            <a class="page-link" data-num="${responseDTO.start - 1}">Prev</a>
+                                        </li>
+                                    </c:if>
+                                    <c:forEach begin="${responseDTO.start}" end="${responseDTO.end}" var="num">
+                                        <li class="page-item" ${responseDTO.page == num ? "active" : ""}>
+                                            <a class="page-link" data-num="${num}">
+                                                ${num}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                    <%--                        다음 버튼 표시--%>
+                                    <c:if test="${responseDTO.next}">
+                                        <li class="page-item">
+                                            <a class="page-link" data-num="${responseDTO.end + 1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                                <%--                                페이징 네비게이션 화면 영역--%>
+
+
+                            </div>
+                                <script>
+                                    document.querySelector(".pagination").addEventListener("click", function (e){
+                                        e.preventDefault();
+                                        e.stopPropagation();
+
+                                        const target = e.target; // 클래스가 pagination 선택자 하위 요소들 중에서,
+                                        if(target.tagName !== 'A') { // A태그가 아니라면 이벤트 처리 안하고 나간다.
+                                            return
+                                        }
+                                        // A 태그만 처리하겠다.
+                                        const num = target.getAttribute("data-num") // data-num : 페이지 정보
+                                        self.location = `/todo/list?page=\${num}`
+                                    }, false)
+                                </script>
+
+                            <%--                        다음 버튼 표시--%>
+
+                    </div>
                     </div>
                 </div>
                 <!--        카드 끝 부분-->

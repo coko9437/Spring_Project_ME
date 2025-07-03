@@ -1,6 +1,8 @@
 package com.busanit501.spring_project.service;
 
 import com.busanit501.spring_project.domain.TodoVO;
+import com.busanit501.spring_project.dto.PageRequestDTO;
+import com.busanit501.spring_project.dto.PageResponseDTO;
 import com.busanit501.spring_project.dto.TodoDTO;
 import com.busanit501.spring_project.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +32,37 @@ public class TodoServiceImpl implements TodoService {
         todoMapper.insert(todoVO);
 
     }
-
+    // 페이징 후 전체 조회
     @Override
-    public List<TodoDTO> getAll() {
-        List<TodoDTO> dtoList = todoMapper.selectAll().stream().
-                map(vo -> modelMapper.map(vo, TodoDTO.class))
-                .collect(Collectors.toList());
-        return dtoList;
+    public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
+        // 필요한 준비물 목록 :
+        // 1) DB로부터 페이징 처리 된 데이터목록
+        // 2) DB로부터 전달받은 전체 개수(count)
+        // 3) PageRequestDTO의 페이징 정보, 사이즈 정보, skip 정보가 있기에 그걸 사용하면됨.
+
+        // 1)작업 DB로부터 받은 정보(dto) --> VO로 변환 필요
+            List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+            List<TodoDTO> dtoList = voList.stream().map(vo -> modelMapper.map(vo, TodoDTO.class))
+                    .collect(Collectors.toList());
+        // 2)작업
+        int total = todoMapper.getCount(pageRequestDTO);
+
+        // 준비물을 박스에 담아... 서비스 -> 컨트롤러에 전달
+        PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
     }
+//        페이징 전 전체 조회
+//    @Override
+//    public List<TodoDTO> getAll() {
+//        List<TodoDTO> dtoList = todoMapper.selectAll().stream().
+//                map(vo -> modelMapper.map(vo, TodoDTO.class))
+//                .collect(Collectors.toList());
+//        return dtoList;
+//    }
 
     @Override
     public TodoDTO selectByTno(Long tno) {
