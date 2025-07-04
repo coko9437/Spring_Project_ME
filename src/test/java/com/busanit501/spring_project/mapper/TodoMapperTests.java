@@ -16,7 +16,7 @@ import java.util.List;
 @Log4j2
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/root-context.xml")
-public class TodoMapperTests {
+public class TodoMapperTests { //DAO 역할임.
     @Autowired(required = false)
     private TodoMapper todoMapper;
 
@@ -86,6 +86,26 @@ public class TodoMapperTests {
                 .build();
         int total = todoMapper.getCount(pageRequestDTO);
                 log.info("total : " + total);
+    }
+
+    // 검색, 필터연습, 동적 쿼리1
+    @Test
+    public void testSelectSrearch() {
+        // 검색 준비물 : 검색어, 더미데이터 생성
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                // 검색조건
+                .types(new String[]{"t", "w"})
+                .keyword("수정")
+                // 필터조건, and
+                .finished(false)
+                .from(LocalDate.of(2025,7,1))
+                .to(LocalDate.of(2025,7,31))
+                .build();
+        List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+        voList.forEach(vo -> log.info(vo));
+
     }
 }
 

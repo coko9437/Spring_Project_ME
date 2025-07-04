@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.swing.text.SimpleAttributeSet;
 import javax.validation.Valid;
@@ -98,9 +99,13 @@ public class TodoController {
     }
     // 하나조회 (서버가 DB로부터 받은 tno 번호로 todo정보 조회) || 정방향으로 찍고 역방향으로 돌아온 상태
     @GetMapping({"/read", "/modify"})
-    public void read(Long tno, Model model){
+    // 목록 -> 상세보기 : tno 번호와, page, size 정보도 같이 전달함.
+    // 한번에 PageRequestDTO 담기
+    // 스프링은 자동으로, PageRequestDTO 내용을 Model 알아서 화면에 전달.
+    public void read(Long tno, PageRequestDTO pageRequestDTO, Model model){
         TodoDTO todoDTO = todoService.selectByTno(tno);
         log.info(todoDTO);
+            log.info("페이징 정보 받기 pageRequestDTO.getLink() : " +pageRequestDTO.getLink());
 //        서버 -> 웹화면으로 데이터전달 (키:dto, 값:객체)
 //        화면에서 사용하려면 키(dto)를 이용하면 됨.
         model.addAttribute("dto", todoDTO);
@@ -108,15 +113,25 @@ public class TodoController {
     }
     // 삭제하면 컨트롤러에서 받아와서 /todo/list 화면으로 넘어감.
     @PostMapping("/remove")
-    public String remove(Long tno, RedirectAttributes redirectAttributes) {
+    public String remove(Long tno,
+                         PageRequestDTO pageRequestDTO,
+                         RedirectAttributes redirectAttributes) {
         log.info("삭제작업중.");
             log.info("tno : "+tno);
-            todoService.remove(tno);
+            todoService.remove(tno); // why? 컨트롤러는 기능이 없어서 서비스로 넘김.
+
+        // 화면에 전달.
+            // 쿼리스트링으로 서버->화면 전달함.
+//        redirectAttributes.addAttribute("size",pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("page",1);
+        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
+
             return "redirect:/todo/list";
     }
 
     @PostMapping("/modify")
     public String modify(@Valid TodoDTO todoDTO,
+                         PageRequestDTO pageRequestDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
@@ -131,6 +146,13 @@ public class TodoController {
         }
         log.info("수정 로직처리 post 작업중 넘어온 데이터 확인 todoDTO: " + todoDTO);
         todoService.modify(todoDTO);
+
+        // 수정 후 현재 페이징 정보를 유지하기, 전달하기
+        // 화면에 전달.
+        // 쿼리스트링으로 서버->화면 전달함.
+        redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
+
         //PRG 패턴,
         return "redirect:/todo/list";
     }

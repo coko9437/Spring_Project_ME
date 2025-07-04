@@ -58,6 +58,59 @@ http://localhost:8080/resources/test.html-->
         </div>
         <!--        네비게이션바 추가 끝-->
 
+        <%--        검색 화면 위치 시작--%>
+        <div class="row content">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">목록</h5>
+                        <%--          검색시 필요한 input 태그 첨부, 검색 로직, 화면에서 서버로 --%>
+                        <%--          데이터 전달시(검색어 전달), get 방식, --%>
+                        <form action="/todo/list" method="get">
+                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
+                            <div class="mb-3">
+                                <!-- 검색칸에 체크박스 다음페이지에도 유지되게 -->
+                            <input type="checkbox" name="finished"
+                            ${pageRequestDTO.finished ? "checked" : ""}
+                            > 완료여부
+                        </div>
+                        <div class="mb-3">
+                            <input type="checkbox" name="types" value="t"
+                                ${pageRequestDTO.checkType("t") ? "checked" : ""}
+                            >제목
+                            <input type="checkbox" name="types" value="w"
+                                ${pageRequestDTO.checkType("w") ? "checked" : ""}
+                            >작성자
+                            <input type="text" name="keyword" class="form-control"
+                                value='<c:out value="${pageRequestDTO.keyword}"/>'
+                            >
+                        </div>
+                        <div class="input-group mb-3 dueDateDiv">
+                            <input type="date" name="from" class="form-control"
+                                value="${pageRequestDTO.from}"
+                            >
+                            <input type="date" name="to" class="form-control"
+                                value="${pageRequestDTO.to}"
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="float-end">
+                                <button class="btn btn-primary" type="submit">검색</button>
+                                <button class="btn btn-info clearBtn" type="reset">초기화</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--        검색 화면 위치  끝--%>
+
+
         <!--        class="row content"-->
         <div class="row content">
             <!--        col-->
@@ -88,9 +141,9 @@ http://localhost:8080/resources/test.html-->
                             <c:forEach items="${responseDTO.dtoList}" var="dto">
                                 <tr>
                                     <th scope="row"><c:out value="${dto.tno}"></c:out></th>
-                                        <%--      클릭시? : /todo/read?tno=21--%>
+                                        <%--                                    클릭시 : /todo/read?tno=21--%>
                                     <td>
-                                        <a href="/todo/read?tno=${dto.tno}" class="text-decoration-none">
+                                        <a href="/todo/read?tno=${dto.tno}&${pageRequestDTO.link}" class="text-decoration-none">
                                             <c:out value="${dto.title}"/>
                                         </a>
                                     </td>
@@ -100,56 +153,77 @@ http://localhost:8080/resources/test.html-->
                                 </tr>
                             </c:forEach>
                             </tbody>
+
                         </table>
-<%--                        페이징을 가리키는 화면(네비게이션)을 부트스트랩에서 가져와서 이용하기              --%>
-<%--                            <div class="float-end">--%>
-                            <div>
+
+                        <%--                        페이징을 가리키는 네비게이션 , 부트 스트랩에서 가져와서 이용--%>
+                        <%--                        <div class="float-end">--%>
+                        <div>
 
 
-                                <%--                            페이징 네비게이션 화면 영역--%>
-                                <ul class="pagination flex-wrap justify-content-center">
-                                    <%--                            이전 버튼--%>
-                                    <c:if test="${responseDTO.prev}">
-                                        <li class="page-item">
-                                            <a class="page-link" data-num="${responseDTO.start - 1}">Prev</a>
-                                        </li>
-                                    </c:if>
-                                    <c:forEach begin="${responseDTO.start}" end="${responseDTO.end}" var="num">
-                                        <li class="page-item" ${responseDTO.page == num ? "active" : ""}>
-                                            <a class="page-link" data-num="${num}">
+                            <%--                            페이징 네비게이션 화면 영역--%>
+                            <ul class="pagination flex-wrap justify-content-center">
+                                <%--       ui1 이전 버튼--%>
+                                <%--                                화면에서는 ,서버로부터 전달받은 responseDTO 객체(상자) , 꺼내서 이용중--%>
+                                <c:if test="${responseDTO.prev}">
+                                    <li class="page-item">
+                                        <a class="page-link" data-num="${responseDTO.start - 1}">Prev</a>
+                                    </li>
+                                </c:if>
+                                <%--                                    ui2, 페이지네이션 번호 뷰--%>
+                                <c:forEach begin="${responseDTO.start}" end="${responseDTO.end}" var="num">
+                                    <li class="page-item ${responseDTO.page == num ? "active" : "" }">
+                                        <a class="page-link" data-num="${num}">
                                                 ${num}
-                                            </a>
-                                        </li>
-                                    </c:forEach>
-                                    <%--                        다음 버튼 표시--%>
-                                    <c:if test="${responseDTO.next}">
-                                        <li class="page-item">
-                                            <a class="page-link" data-num="${responseDTO.end + 1}">Next</a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                                <%--                                페이징 네비게이션 화면 영역--%>
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                                <%--          ui3, 다음 버튼 표시--%>
+                                <c:if test="${responseDTO.next}">
+                                    <li class="page-item">
+                                        <a class="page-link" data-num="${responseDTO.end + 1}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                            <%--                                페이징 네비게이션 화면 영역--%>
 
 
-                            </div>
-                                <script>
-                                    document.querySelector(".pagination").addEventListener("click", function (e){
-                                        e.preventDefault();
-                                        e.stopPropagation();
+                        </div>
+                        <%--                            페이징 이벤트 처리 하기.--%>
+                        <script>
+                            // 검색 화면 초기화 클릭시, 기본 전체 페이지 이동하기.
+                            document.querySelector(".clearBtn").addEventListener("click", function (e){
+                                e.preventDefault();
+                                e.stopPropagation();
+                                self.location = '/todo/list'
+                                })
 
-                                        const target = e.target; // 클래스가 pagination 선택자 하위 요소들 중에서,
-                                        if(target.tagName !== 'A') { // A태그가 아니라면 이벤트 처리 안하고 나간다.
-                                            return
-                                        }
-                                        // A 태그만 처리하겠다.
-                                        const num = target.getAttribute("data-num") // data-num : 페이지 정보
-                                        self.location = `/todo/list?page=\${num}`
-                                    }, false)
-                                </script>
+                            document.querySelector(".pagination").addEventListener("click", function (e){
+                                e.preventDefault();
+                                e.stopPropagation();
 
-                            <%--                        다음 버튼 표시--%>
+                                const target = e.target; // 클래스가 pagination 선택자 하위 요소들 중에서,
+                                if(target.tagName !== 'A') { // a 태그가 아닌 다른 태그를 클릭시, 이벤트 처리 안한다.
+                                    return
+                                }
+                                // a 태그만 이벤트 처리하겠다. 의도.
+                                // data-num : 페이지 정보,
+                                const num = target.getAttribute("data-num")
+                                    // 목록에서 -> 상세보기 전달시,
+                                        // 이너html 이용해서, 히든으로 페이징 정보를 전달.
+                                // 검색 폼 ------
+                                const fromObj = document.querySelector("form")
+                                formObj.innerHTML += `<input type = 'hidden' name = 'page' value = '\${num}'>`
+                                    formObj.submit()
 
-                    </div>
+                                // ` 백틱 사용.
+                                // self.location = `/todo/list?page=\${num}`
+
+                            },false)
+                        </script>
+
+                        <%--                        다음 버튼 표시--%>
+
                     </div>
                 </div>
                 <!--        카드 끝 부분-->

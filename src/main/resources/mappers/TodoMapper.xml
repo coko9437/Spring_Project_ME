@@ -37,12 +37,59 @@
 
 <!--    PageRequestDTO에서, getSkip 메서드가 있는데,-->
 <!--    Mybatis가 기본적으로 getXXX 이렇게 처리가된 메서드는 #{skip} - getSkip 처럼 동작함.-->
+
+    <!--    검색에서, 동적 쿼리 추가, -->
+    <!--    1) 제목, 작성자로 조건절 추가하기  String[] types = {"t","w"}-->
+    <!--     검색 조건에서, 제목 , 작성자 없는 경우도 있음. 유효성 체크.-->
+    <!--           반복되는 sql를 아이디를 이용해서 따로 지정 한 후, 다른 곳에서, 이 부분을 재사용,-->
+    <!--           sql 분리한 부분을 , 불러오기 해서 재사용할 예정-->
     <select id="selectList">
-        select * from tbl_todo order by tno desc limit #{skip}, #{size}
+        select * from tbl_todo
+        <include refid="search"></include>
+        order by tno desc limit #{skip}, #{size}
     </select>
 
+    <!--    검색시 사용할 sql 분리함-->
+    <!--    필터 , finished 완료 여부 조건 설정-->
+    <!--    trim은 상황에 따라서, 알아서, and 부분을 추가 할지 말지를 알아서 정해줌-->
+    <!--    필터2, 날짜 조건 추가하기-->
+    <sql id="search">
+        <where>
+            <if test="types != null and types.length > 0">
+                <foreach collection="types" item="type" open="(" close=")" separator="OR">
+                    <if test="type == 't'.toString()">
+                        title like concat('%', #{keyword},'%')
+                    </if>
+                    <if test="type == 'w'.toString()">
+                        writer like concat('%', #{keyword},'%')
+                    </if>
+                </foreach>
+            </if>
+
+
+            <if test="finished">
+                <trim prefix="and">
+                    finished = 1
+                </trim>
+            </if>
+
+
+            <if test="from != null and to != null">
+                <trim prefix="and">
+                    dueDate between #{from} and #{to}
+                </trim>
+            </if>
+
+        </where>
+    </sql>
+
+    <!--    검색 조건부 sql를 포함시키기, -->
+    <!--    1)조건이 있으면, 조건에 해당하는 부분 검색, -->
+    <!--    2) 조건이 없으면, 지금처럼 전체 조회. -->
     <select id="getCount">
-        select count(tno) from tbl_todo
+        select count(tno)
+        from tbl_todo
+        <include refid="search"></include>
     </select>
 
 </mapper>

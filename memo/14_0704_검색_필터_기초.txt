@@ -1,0 +1,35 @@
+
+
+# 검색,필터 시 사용할 예문 확인, 검색 결과도 페이징 처리 없이
+select * from tbl_todo
+where
+    (title like concat('%','오늘','%'))
+    or
+    (writer like concat('%','이상용','%'))
+order by tno desc ;
+
+select * from tbl_todo
+where title like '%오늘%' order by tno desc ;
+
+#필터 조건 추가해서 검색 해보기.
+# 검색( 1) 제목 : 오늘 or 2) 작성자 : 이상용  )
+and 필터(finished = 1)
+select * from tbl_todo
+where
+    (
+    (title like concat('%','오늘','%'))
+   or
+    (writer like concat('%','이상용','%'))
+    )
+and
+   finished = 1
+and
+    dueDate between '2024-5-01' and '2024-5-31'
+order by tno desc limit 10,10 ;
+
+
+검색과 필터 구문은 완성.
+그리고,
+적용한 sql  전체 목록 에서 적용했음.
+
+전체 갯수를 구할 때 사용가능.

@@ -60,6 +60,11 @@ http://localhost:8080/resources/test.html-->
                     </div>
                     <div class="card-body">
                         <form action="/todo/modify" method="post">
+<%--                            포스트형식으로 서버에 데이터 전달... page, size 정보 전달함.--%>
+<%--                            기존, get 방식으로 화면으로 전달할 때 : ?page=7&size=10
+                                어떻게할까? hidden에 담아서 전달--%>
+                            <input type="hidden" name="page" value="${pageRequestDTO.page}">
+                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Tno</span>
                                 <input type="text" name="tno" class="form-control" readonly
@@ -113,7 +118,8 @@ http://localhost:8080/resources/test.html-->
                                 function (e) {
                                     // read , 읽기전용. 변결 불가.
                                     // 수정폼으로 가기. 데이터 변경 가능.
-                                    self.location = "/todo/list"
+                                    // self.location = "/todo/list"
+                                    self.location = "/todo/list?${pageRequestDTO.link}"
                                 }, false)
 
                             // 삭제하기 버튼 클릭 이벤트 처리.
