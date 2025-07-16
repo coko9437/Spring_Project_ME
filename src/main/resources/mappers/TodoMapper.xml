@@ -65,21 +65,16 @@
                     </if>
                 </foreach>
             </if>
-
-
             <if test="finished">
                 <trim prefix="and">
                     finished = 1
                 </trim>
             </if>
-
-
             <if test="from != null and to != null">
                 <trim prefix="and">
                     dueDate between #{from} and #{to}
                 </trim>
             </if>
-
         </where>
     </sql>
 

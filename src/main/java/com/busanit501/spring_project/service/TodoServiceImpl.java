@@ -55,14 +55,7 @@ public class TodoServiceImpl implements TodoService {
                 .build();
         return pageResponseDTO;
     }
-//        페이징 전 전체 조회
-//    @Override
-//    public List<TodoDTO> getAll() {
-//        List<TodoDTO> dtoList = todoMapper.selectAll().stream().
-//                map(vo -> modelMapper.map(vo, TodoDTO.class))
-//                .collect(Collectors.toList());
-//        return dtoList;
-//    }
+
 
     @Override
     public TodoDTO selectByTno(Long tno) {

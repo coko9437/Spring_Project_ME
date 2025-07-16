@@ -27,7 +27,7 @@ http://localhost:8080/resources/test.html-->
             <div class="col">
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Navbar</a>
+                        <a class="navbar-brand" href="#">게시판</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -41,12 +41,7 @@ http://localhost:8080/resources/test.html-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="/todo/register">글쓰기</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Pricing</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -92,8 +87,8 @@ http://localhost:8080/resources/test.html-->
                             </div>
 
                         </form>
-                        <%--          서버로 부터 유효성 체크 통과를 못했을 경우에, errors 키로 받아온 --%>
-                        <%--          에러 정보를 , 웹브라우저 콘솔에 일단 표기 해보기--%>
+                        <%--                        서버로 부터 유효성 체크 통과를 못했을 경우에, errors 키로 받아온 --%>
+                        <%--                        에러 정보를 , 웹브라우저 콘솔에 일단 표기 해보기--%>
                         <script>
                             const serverValidResult = {}
                             <c:forEach items="${errors}" var="error">

@@ -20,7 +20,7 @@ http://localhost:8080/resources/test.html-->
             <div class="col">
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Navbar</a>
+                        <a class="navbar-brand" href="#">게시판</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -33,12 +33,6 @@ http://localhost:8080/resources/test.html-->
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/todo/register">글쓰기</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Pricing</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                                 </li>
                             </ul>
                         </div>
@@ -60,11 +54,12 @@ http://localhost:8080/resources/test.html-->
                     </div>
                     <div class="card-body">
                         <form action="/todo/modify" method="post">
-<%--                            포스트형식으로 서버에 데이터 전달... page, size 정보 전달함.--%>
-<%--                            기존, get 방식으로 화면으로 전달할 때 : ?page=7&size=10
-                                어떻게할까? hidden에 담아서 전달--%>
+                            <%--                            기존, get 방식으로 화면으로 전달 할 때 ?page=7&size=10--%>
+                            <%--                            포스트 형식으로 서버에 데이터 전달, page, size 정보 전달함.--%>
+                            <%--                            히든으로 담아서 전달. --%>
                             <input type="hidden" name="page" value="${pageRequestDTO.page}">
                             <input type="hidden" name="size" value="${pageRequestDTO.size}">
+
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Tno</span>
                                 <input type="text" name="tno" class="form-control" readonly
@@ -130,7 +125,10 @@ http://localhost:8080/resources/test.html-->
                                     e.preventDefault();
                                     e.stopPropagation();
 
-                                    formObj.action = "/todo/remove"
+                                    // formObj.action = "/todo/remove"
+                                    // 삭제 후, 검색 정보를 유지하기, pageRequsetDTO , 객체에서, link 이용하기.
+                                    // 쿼리 스트링으로, 검색 정보 유지하기.
+                                    formObj.action = '/todo/remove?${pageRequestDTO.link}'
                                     formObj.method = "post"
 
                                     formObj.submit()
@@ -138,14 +136,14 @@ http://localhost:8080/resources/test.html-->
                                 }, false)
 
                             //수정하기. 버튼 클릭시, 자바스크립트로 서버에 데이터 전달 해보기.
-                            document.querySelector(".btn-primary").addEventListener("click", function (e){
+                            document.querySelector(".btn-primary").addEventListener("click", function (e) {
                                 e.preventDefault();
                                 e.stopPropagation();
 
                                 formObj.action = "/todo/modify"
                                 formObj.method = "post"
                                 formObj.submit()
-                            },false)
+                            }, false)
 
                             // 유효성 체크 안될 경우, 서버로부터 전달 받은 errors 출력하는 코드 추가
                             // register.jsp , 로직과 같은 코드, 복붙

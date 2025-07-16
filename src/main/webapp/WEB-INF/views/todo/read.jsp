@@ -20,7 +20,7 @@ http://localhost:8080/resources/test.html-->
       <div class="col">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">게시판</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -33,12 +33,6 @@ http://localhost:8080/resources/test.html-->
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/todo/register">글쓰기</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li>
               </ul>
             </div>
@@ -101,10 +95,10 @@ http://localhost:8080/resources/test.html-->
                       function (e) {
                         // read , 읽기전용. 변결 불가.
                         // 수정폼으로 가기. 데이터 변경 가능.
-                          // 양쪽은 `(백틱)으로 감싸기... 문자열 처리하기가 쉽다.
-                          // 상세보기 화면 -> 수정 폼 화면으로 이동시 -> 쿼리 스트링으로 페이징정보를 달고서 간다.
-                          // 어디로??  /todo/modify/ get 화면 처리로 가야함.
-                        self.location = `/todo/modify?tno=+${dto.tno}&${pageRequestDTO.link}`
+                        // 양쪽을 백티 기호로 감싸기, 문자열 처리하기가 쉽다.
+                        // 상세보기 화면 -> 수정 폼 화면으로 이동시 -> 쿼리 스트링으로 페이징정보를 달고서 간다.
+                        // 어디로 가죠? /todo/modify/ get 화면 처리로 가야함.
+                        self.location = `/todo/modify?tno=${dto.tno}&${pageRequestDTO.link}`
                       }, false)
 
               document.querySelector(".btn-secondary").addEventListener("click",
